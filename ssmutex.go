@@ -64,7 +64,7 @@ func NewContainer[T any](v T) *Container[T] {
 
 // Lock the container and return the shared state together with the key to unlock it again.
 // If the key is leaked without being used, it forces a panic.
-func (m *Container[T]) Lock() (T, *key) {
+func (m *Container[T]) Lock() (T, Unlocker) {
 	m.l.Lock()
 	k := &key{l: &m.l}
 	runtime.SetFinalizer(k, func(fk *key) {
