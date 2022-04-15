@@ -78,6 +78,6 @@ func (m *Container[T]) Lock() (T, Unlocker) {
 // Convenient wrapper for locking, execute a function, and unlocking.
 func (m *Container[T]) WithLock(f func(T)) {
 	v, key := m.Lock()
+	defer key.Unlock()
 	f(v)
-	key.Unlock()
 }
